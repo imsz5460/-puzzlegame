@@ -102,7 +102,10 @@ NSInteger totalRows = 4;
 
             [self.collectionView reloadData];
             
-            if ([_currentStatus isSuccess: self.cellDataSource]) {
+//            if ([_currentStatus isSuccess: self.cellDataSource]) {
+//                [self showAlert:@"恭喜！你牛逼啊"];
+//            } ;
+            if ([_currentStatus isSuccessWithCurrent: self.cellDataSource andTarget:_completedStatus.pieceArrayModel]) {
                 [self showAlert:@"恭喜！你牛逼啊"];
             } ;
         }];
@@ -143,7 +146,7 @@ NSInteger totalRows = 4;
 #pragma mark -自动拼图
 - (IBAction)help:(UIButton *)sender {
 
-    if ([_currentStatus isSuccess: self.cellDataSource]) {
+    if ([_currentStatus isSuccessWithCurrent:self.cellDataSource andTarget:_completedStatus.pieceArrayModel]) {
         return;
     }
 

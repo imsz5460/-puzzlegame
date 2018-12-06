@@ -12,6 +12,7 @@
 @interface PiecesStatus ()
 @property (strong, nonatomic) NSMutableArray *currentIndexs;//当前方块对应初始时索引
 @property (strong, nonatomic) NSArray *targetIndexs;//目标索引数组
+
 @end
 
 @implementation PiecesStatus {
@@ -273,12 +274,13 @@
 {
     
     NSMutableArray *newDatasourceArr = [NSMutableArray array];
-    int m = (int)originalArr.count;
+    NSMutableArray *tempArr = [originalArr mutableCopy];
+    int m = (int)tempArr.count;
     for (int i=0; i<m; i++) {
-        int t = arc4random() % (originalArr.count);
-        newDatasourceArr[i] = originalArr[t];
-        originalArr[t] = [originalArr lastObject];
-        [originalArr removeLastObject];
+        int t = arc4random() % (tempArr.count);
+        newDatasourceArr[i] = tempArr[t];
+        tempArr[t] = [tempArr lastObject];
+        [tempArr removeLastObject];
         
     }
     return  newDatasourceArr;
@@ -288,24 +290,32 @@
 - (NSMutableArray *)changeArray:(NSMutableArray *)originalArr {
     
     id last = originalArr.lastObject;
-    [originalArr removeLastObject];
+    NSMutableArray *temp = originalArr;
+    [temp removeLastObject];
     
     // 数组乱序,还要校验随机后是否跟原来一样
     do {
         do {
-            originalArr = [self randomArray: originalArr];
-        } while (![self canRecovery: originalArr]);
-    } while ([self isSuccess:originalArr]);
+            temp = [self randomArray: temp];
+        } while (![self canRecovery: temp]);
+    } while ([self isSuccessWithCurrent:temp  andTarget:self.pieceArrayModel]);
     
-    [originalArr addObject: last];
-    return originalArr;
+    [temp addObject: last];
+    return temp;
+}
+
+- (NSArray *)addObject:(id)obj fromObj:(NSMutableArray *)fromObj {
+    [fromObj addObject: obj];
+    return fromObj;
 }
 
 #pragma mark -校验是否成功闯关
-- (BOOL) isSuccess:(NSMutableArray *)currentPieceArr {
+- (BOOL) isSuccessWithCurrent:(NSArray *)currentPieceArr andTarget:(NSArray *)targetArr {
     
-    return [currentPieceArr isEqualToArray: self.targetIndexs];
+    return [currentPieceArr isEqualToArray: targetArr];
 }
+
+
 
 #pragma mark -currentIndexs
 - (NSMutableArray *)currentIndexs {

@@ -55,6 +55,7 @@
 - (NSMutableArray *) disorganize;
 - (NSMutableArray *)currentIndexs;
 //校验是否成功闯关
-- (BOOL) isSuccess:(NSMutableArray *)currentPieceArr;
+- (BOOL) isSuccessWithCurrent:(NSArray *)currentPieceArr andTarget:(NSArray *)targetArr;
+
 @end
 
