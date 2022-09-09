@@ -134,11 +134,9 @@ NSInteger totalRows = 4;
         _searcher.startStatus = [self.currentStatus copyStatus];
         _searcher.targetStatus = [self.completedStatus copyStatus];
         
-        [_searcher setEqualComparator:^BOOL(PiecesStatus *status1, PiecesStatus *status2) {
-            
-            return [status1 equalWithStatus:status2];
+        [_searcher setEqualComparator:^BOOL(id<JXPathSearcherStatus> status1, id<JXPathSearcherStatus> status2) {
+            return [(PiecesStatus *)status1 equalWithStatus:(PiecesStatus *)status2];
         }];
-       
     }
     return _searcher;
 }
